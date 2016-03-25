@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margintop_double"
+            android:clickable="true"
             android:text="@string/not_a_member_sign_up_now"
             android:textColor="@color/normal_white" />
     </LinearLayout>
