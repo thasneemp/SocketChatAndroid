@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SocketChatAndroid</string>
+    <string name="login">LOGIN</string>
+    <string name="not_a_member_sign_up_now">Not a member ? Sign up now.</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="resgister">Register</string>
+    <string name="name">Name</string>
+    <string name="all_ready_registerd_login_me">Already Registerd ! Login Me.</string>
 </resources>

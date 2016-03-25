@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="background_green">#25AD8F</color>
+    <color name="button_white">#EBECF0</color>
+    <color name="button_pressed">#d5d5d7</color>
+    <color name="normal_white">#FDFDFD</color>
+    <color name="register_back">#2D3238</color>
+    <color name="register_button">#E74C87</color>
+    <color name="register_button_pressed">#f495b9</color>
+
 </resources>
