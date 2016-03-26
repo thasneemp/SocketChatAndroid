@@ -7,4 +7,11 @@
     <string name="resgister">Register</string>
     <string name="name">Name</string>
     <string name="all_ready_registerd_login_me">Already Registerd ! Login Me.</string>
+    <string name="newtwork_check">Please check your Internet</string>
+    <string name="login_succes">Login Success</string>
+    <string name="login_failed">Login failed</string>
+    <string name="please_enter_the_credentials">Please enter the credentials</string>
+    <string name="enter_username">Enter username</string>
+    <string name="enter_name">Enter name</string>
+    <string name="enter_password">Enter  password</string>
 </resources>

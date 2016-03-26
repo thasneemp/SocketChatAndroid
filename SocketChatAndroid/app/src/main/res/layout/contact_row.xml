@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+
+    android:padding="@dimen/padding_small">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/normal_profile" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <examples.muhammed.com.socketchatandroid.views.CTextView
+                android:id="@+id/profileNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margintop_normal"
+                android:text="test"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_bold"
+                android:textStyle="bold" />
+
+            <examples.muhammed.com.socketchatandroid.views.CTextView
+                android:id="@+id/lastMessageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/margintop_normal"
+                android:text="test"
+                android:textColor="@color/gray_light"
+                android:textSize="@dimen/text_size_normal" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <examples.muhammed.com.socketchatandroid.views.CTextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_right_normal"
+        android:text="test"
+
+        android:textColor="@color/gray_light"
+        android:textSize="@dimen/text_size_normal" />
+
+</RelativeLayout>

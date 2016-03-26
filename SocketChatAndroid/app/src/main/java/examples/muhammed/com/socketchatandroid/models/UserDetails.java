@@ -1,7 +1,7 @@
 package examples.muhammed.com.socketchatandroid.models;
 
 /**
- * Created by thasneem on 25/3/16.
+ * Created by thasneem on 26/3/16.
  */
 public class UserDetails {
     private String username;
@@ -18,13 +18,14 @@ public class UserDetails {
         this.username = username;
     }
 
-    public String get_id() {
+    public String getId() {
         return _id;
     }
 
-    public void set_id(String _id) {
+    public void setId(String _id) {
         this._id = _id;
     }
+
 
     public String getName() {
         return name;
@@ -32,10 +33,5 @@ public class UserDetails {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "ClassPojo [username = " + username + ", _id = " + _id + ", name = " + name + "]";
     }
 }

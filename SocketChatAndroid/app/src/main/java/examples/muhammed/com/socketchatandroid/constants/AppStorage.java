@@ -21,7 +21,7 @@ public class AppStorage {
         SharedPreferences.Editor edit = preferences.edit();
         edit.putString(USER_NAME, userDetails.getUsername());
         edit.putString(NAME, userDetails.getName());
-        edit.putString(USER_ID, userDetails.get_id());
+        edit.putString(USER_ID, userDetails.getId());
         edit.apply();
     }
 
@@ -31,4 +31,8 @@ public class AppStorage {
     }
 
 
+    public static String getUserId(Context context) {
+        String id = getSharedPreferences(context).getString(USER_ID, "");
+        return id;
+    }
 }

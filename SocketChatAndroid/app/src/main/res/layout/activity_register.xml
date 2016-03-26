@@ -21,7 +21,7 @@
             android:layout_gravity="center_horizontal">
 
             <examples.muhammed.com.socketchatandroid.views.CEditText
-                android:id="@+id/editText"
+                android:id="@+id/nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -35,7 +35,7 @@
             android:layout_gravity="center_horizontal">
 
             <examples.muhammed.com.socketchatandroid.views.CEditText
-                android:id="@+id/editText2"
+                android:id="@+id/usernameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margintop_normal"
@@ -51,7 +51,7 @@
             android:layout_gravity="center_horizontal">
 
             <examples.muhammed.com.socketchatandroid.views.CEditText
-                android:id="@+id/editText1"
+                android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margintop_normal"
@@ -62,7 +62,7 @@
 
 
         <examples.muhammed.com.socketchatandroid.views.CButton
-            android:id="@+id/button"
+            android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margintop_normal"
@@ -71,7 +71,7 @@
             android:textColor="@color/button_white" />
 
         <examples.muhammed.com.socketchatandroid.views.CTextView
-            android:id="@+id/textView"
+            android:id="@+id/alreadyRegLinkTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

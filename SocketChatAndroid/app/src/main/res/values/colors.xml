@@ -10,5 +10,8 @@
     <color name="register_back">#2D3238</color>
     <color name="register_button">#E74C87</color>
     <color name="register_button_pressed">#f495b9</color>
+    <color name="white">#ffffff</color>
+    <color name="gray_light">#716e6e</color>
+    <color name="black">#000000</color>
 
 </resources>
