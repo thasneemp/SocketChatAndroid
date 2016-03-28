@@ -6,7 +6,7 @@ package examples.muhammed.com.socketchatandroid.constants;
 public class UrlConstants {
     //    private static final String IP = "192.168.5.84";
     private static final String IP = "10.0.2.2"; // Android Emulator
-    //    private static final String IP = "10.0.3.2"; // Android Genymotion Emulator
+    //        private static final String IP = "10.0.3.2"; // Android Genymotion Emulator
     private static final String PORT = "3000/";
     private static final String SERVER_URL = "http://" + IP + ":" + PORT;
 

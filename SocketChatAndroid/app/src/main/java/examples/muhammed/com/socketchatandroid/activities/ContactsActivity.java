@@ -1,5 +1,6 @@
 package examples.muhammed.com.socketchatandroid.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,7 @@ import examples.muhammed.com.socketchatandroid.models.UserDetails;
 /**
  * Created by thasneem on 26/3/16.
  */
-public class ContactsActivity extends BaseActivity {
+public class ContactsActivity extends BaseActivity implements ContactsArrayAdapters.OnItemSelectedListener {
     private static final int REQUEST_USER_LIST = 123;
     private RecyclerView mContactRecyclerView;
 
@@ -60,8 +61,15 @@ public class ContactsActivity extends BaseActivity {
             ContactResponse contactResponse = gson.fromJson(object.toString(), ContactResponse.class);
             if (contactResponse != null && contactResponse.getServerStatus().getStatus()) {
                 ArrayList<UserDetails> userDetails = new ArrayList<>(Arrays.asList(contactResponse.getUserDetails()));
-                mContactRecyclerView.setAdapter(new ContactsArrayAdapters(this, userDetails));
+                ContactsArrayAdapters adapters = new ContactsArrayAdapters(this, userDetails);
+                adapters.setOnItemSelectedListener(this);
+                mContactRecyclerView.setAdapter(adapters);
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(UserDetails details, int position) {
+        startActivity(new Intent(this, ChatActivity.class));
     }
 }

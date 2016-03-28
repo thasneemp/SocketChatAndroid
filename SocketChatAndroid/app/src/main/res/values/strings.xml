@@ -14,4 +14,5 @@
     <string name="enter_username">Enter username</string>
     <string name="enter_name">Enter name</string>
     <string name="enter_password">Enter  password</string>
+    <string name="send">SEND</string>
 </resources>

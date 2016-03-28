@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_small">
+
+    <examples.muhammed.com.socketchatandroid.views.CEditText
+        android:id="@+id/chatEditText"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="3"
+        android:background="@drawable/chat_ediitext_back"
+        android:paddingLeft="5dp"
+        android:textColor="@color/black" />
+
+    <examples.muhammed.com.socketchatandroid.views.CButton
+        android:id="@+id/sendMessageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/send"
+        android:textColor="@color/white" />
+</LinearLayout>
