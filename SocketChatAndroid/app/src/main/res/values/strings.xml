@@ -15,4 +15,9 @@
     <string name="enter_name">Enter name</string>
     <string name="enter_password">Enter  password</string>
     <string name="send">SEND</string>
+    <string name="online">online</string>
+    <string name="empty" />
+    <string name="log_out">Log out</string>
+    <string name="clear_chat">Clear chat</string>
+    <string name="typing">typing....</string>
 </resources>

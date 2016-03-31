@@ -8,10 +8,9 @@ import com.cabot.volleyframework.NetworkManager;
 
 import org.json.JSONObject;
 
-/**
- * Created by thasneem on 25/3/16.
- */
+
 public abstract class BaseActivity extends AppCompatActivity implements NetworkManager.OnNetWorkListener {
+    public static final int FINISH = 0x64;
     private NetworkManager mNetworkManager;
 
     @Override

@@ -31,6 +31,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (AppStorage.isUserLogged(this)) {
+            startActivity(new Intent(this, ContactsActivity.class));
+            finish();
+        }
         setContentView(R.layout.activity_login);
         /**
          * Initiating UI
@@ -96,6 +100,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == BaseActivity.FINISH) {
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onSuccess(JSONObject object, int type, int requestId) {
         if (type == NetworkOptions.JSON_OBJECT_REQUEST) {
             if (requestId == LOGIN_REQUEST_ID) {
@@ -104,7 +118,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (commonResponse != null) {
                     if (commonResponse.getServerStatus().getStatus()) {
                         AppStorage.saveUserDetails(commonResponse.getUserDetails(), getApplicationContext());
-                        startActivity(new Intent(this, ContactsActivity.class));
+                        startActivityForResult(new Intent(this, ContactsActivity.class), BaseActivity.FINISH);
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_SHORT).show();

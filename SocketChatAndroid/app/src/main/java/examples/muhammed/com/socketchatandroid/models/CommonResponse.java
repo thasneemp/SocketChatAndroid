@@ -1,8 +1,6 @@
 package examples.muhammed.com.socketchatandroid.models;
 
-/**
- * Created by thasneem on 25/3/16.
- */
+
 public class CommonResponse {
     private UserDetails userDetails;
 

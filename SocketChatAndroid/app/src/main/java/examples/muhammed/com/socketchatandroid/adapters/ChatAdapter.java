@@ -34,23 +34,26 @@ public class ChatAdapter extends ArrayAdapter<ChatModel> {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.chat_row, parent, false);
-
-            viewHolder.mChatContinerLinearLayout = (LinearLayout) convertView.findViewById(R.id.singleMessageContainer);
+            viewHolder.mChatContainerLinearLayout = (LinearLayout) convertView.findViewById(R.id.singleMessageContainer);
             viewHolder.mChatTextView = (CTextView) convertView.findViewById(R.id.singleMessage);
+            viewHolder.mChatTime = (CTextView) convertView.findViewById(R.id.timeTextView);
+            viewHolder.mChatWindow = (LinearLayout) convertView.findViewById(R.id.chatWindow);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.mChatTextView.setText(mChatModels.get(position).getMessage());
+        viewHolder.mChatTime.setText(mChatModels.get(position).getTime());
         if (mChatModels.get(position).isMine()) {
-            viewHolder.mChatTextView.setBackgroundResource(R.drawable.msg_out);
-            viewHolder.mChatContinerLinearLayout.setGravity(Gravity.RIGHT);
+            viewHolder.mChatWindow.setBackgroundResource(R.drawable.msg_out);
+            viewHolder.mChatContainerLinearLayout.setGravity(Gravity.RIGHT);
         } else {
-            viewHolder.mChatContinerLinearLayout.setGravity(Gravity.LEFT);
-            viewHolder.mChatTextView.setBackgroundResource(R.drawable.msg_in);
+            viewHolder.mChatWindow.setBackgroundResource(R.drawable.msg_in);
+            viewHolder.mChatContainerLinearLayout.setGravity(Gravity.LEFT);
         }
         return convertView;
     }
+
 
     public void addMessage(ChatModel model) {
         mChatModels.add(model);
@@ -59,7 +62,9 @@ public class ChatAdapter extends ArrayAdapter<ChatModel> {
 
     private static class ViewHolder {
         private CTextView mChatTextView;
-        private LinearLayout mChatContinerLinearLayout;
+        private LinearLayout mChatContainerLinearLayout;
+        private LinearLayout mChatWindow;
+        private CTextView mChatTime;
 
     }
 }

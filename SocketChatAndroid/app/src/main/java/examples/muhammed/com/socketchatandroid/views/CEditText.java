@@ -19,4 +19,6 @@ public class CEditText extends EditText {
     public CEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
+
 }

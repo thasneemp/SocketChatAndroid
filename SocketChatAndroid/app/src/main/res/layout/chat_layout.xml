@@ -5,6 +5,8 @@
     android:background="@drawable/back"
     android:orientation="vertical">
 
+    <include layout="@layout/toolbar" />
+
     <ListView
         android:id="@+id/chatListView"
         android:layout_width="match_parent"

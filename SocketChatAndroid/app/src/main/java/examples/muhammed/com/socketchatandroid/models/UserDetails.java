@@ -9,6 +9,8 @@ public class UserDetails {
     private String _id;
 
     private String name;
+    private boolean status;
+    private String status_type;
 
     public String getUsername() {
         return username;
@@ -33,5 +35,21 @@ public class UserDetails {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getStatusType() {
+        return status_type;
+    }
+
+    public void setStatusType(String status_type) {
+        this.status_type = status_type;
     }
 }

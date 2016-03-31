@@ -6,16 +6,40 @@
     <LinearLayout
         android:id="@+id/singleMessageContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="left">
 
-        <examples.muhammed.com.socketchatandroid.views.CTextView
-            android:id="@+id/singleMessage"
+        <LinearLayout
+            android:id="@+id/chatWindow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/msg_in"
-            android:gravity="center"
-            android:maxWidth="230dp"
-            android:textColor="@android:color/primary_text_light" />
+            android:background="@drawable/msg_in">
+
+            <examples.muhammed.com.socketchatandroid.views.CTextView
+                android:id="@+id/singleMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:gravity="center"
+                android:maxWidth="230dp"
+                android:text=""
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="14sp" />
+
+            <examples.muhammed.com.socketchatandroid.views.CTextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/singleMessage"
+                android:layout_below="@id/singleMessage"
+                android:layout_gravity="right|bottom"
+
+                android:gravity="right"
+                android:singleLine="true"
+                android:text="11:12 AM"
+                android:textColor="@color/gray_light"
+                android:textSize="10sp"
+                android:typeface="sans" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
