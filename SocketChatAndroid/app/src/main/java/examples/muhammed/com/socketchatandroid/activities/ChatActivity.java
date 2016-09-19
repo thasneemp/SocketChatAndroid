@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.android.volley.VolleyError;
-import com.cabot.volleyframework.NetworkOptions;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -25,18 +24,21 @@ import examples.muhammed.com.socketchatandroid.date_manipulation.DateImpl;
 import examples.muhammed.com.socketchatandroid.models.ChatModel;
 import examples.muhammed.com.socketchatandroid.models.CommonResponse;
 import examples.muhammed.com.socketchatandroid.models.UserDetails;
+import examples.muhammed.com.socketchatandroid.socket_impl.NetworkFrameWork;
+import examples.muhammed.com.socketchatandroid.socket_impl.NetworkOptions;
 import examples.muhammed.com.socketchatandroid.socket_impl.SocketImpl;
 import examples.muhammed.com.socketchatandroid.views.CButton;
 import examples.muhammed.com.socketchatandroid.views.CEditText;
 
 
-public class ChatActivity extends BaseActivity implements View.OnClickListener, SocketImpl.MessageStatusListener, View.OnFocusChangeListener {
+public class ChatActivity extends BaseActivity implements View.OnClickListener, SocketImpl.MessageStatusListener, View.OnFocusChangeListener, NetworkFrameWork.OnApiResult {
     private static final int REQUEST_GET_STATUS = 1213;
     private ListView mChatListView;
     private CEditText mMessageCEditText;
     private ChatAdapter mChatAdapter;
     private SocketImpl socket;
     private Toolbar mToolbar;
+    private NetworkFrameWork networkFrameWork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
         mMessageCEditText.setOnFocusChangeListener(this);
         mSendCButton.setOnFocusChangeListener(this);
+
+        networkFrameWork = new NetworkFrameWork(this);
     }
 
     private void customizeToolBar() {
@@ -83,23 +87,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         ArrayList<ChatModel> mChtModels = new ArrayList<>();
         mChatAdapter = new ChatAdapter(this, mChtModels);
         mChatListView.setAdapter(mChatAdapter);
-    }
-
-    @Override
-    public void onError(VolleyError error) {
-
-    }
-
-    @Override
-    public void onSuccess(JSONObject object, int type, int requestId) {
-        if (type == NetworkOptions.JSON_OBJECT_REQUEST && requestId == REQUEST_GET_STATUS) {
-            Gson gson = new Gson();
-            CommonResponse response = gson.fromJson(object.toString(), CommonResponse.class);
-            if (response.getServerStatus().getStatus()) {
-                UserDetails userDetails = response.getUserDetails();
-                onStatusChangedListener(userDetails.getId(), userDetails.isStatus(), SocketImpl.EVENT_STATUS_ONLINE);
-            }
-        }
     }
 
 
@@ -197,7 +184,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         /**
          * Get Current user status
          */
-        getNetworkManager().postJsonRequest(NetworkOptions.GET_REQUEST, UrlConstants.GET_STATUS + getToUserId(), null, REQUEST_GET_STATUS);
+        networkFrameWork.getApi(NetworkOptions.GET_REQUEST, UrlConstants.GET_STATUS + getToUserId(), null, REQUEST_GET_STATUS, this);
+//        getNetworkManager().postJsonRequest(, UrlConstants.GET_STATUS + getToUserId(), null, REQUEST_GET_STATUS);
         super.onResume();
     }
 
@@ -254,4 +242,20 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    @Override
+    public void onResultSucces(JSONObject jsonObject, int id) {
+        if (id == REQUEST_GET_STATUS) {
+            Gson gson = new Gson();
+            CommonResponse response = gson.fromJson(jsonObject.toString(), CommonResponse.class);
+            if (response.getServerStatus().getStatus()) {
+                UserDetails userDetails = response.getUserDetails();
+                onStatusChangedListener(userDetails.getId(), userDetails.isStatus(), SocketImpl.EVENT_STATUS_ONLINE);
+            }
+        }
+    }
+
+    @Override
+    public void onResultError(VolleyError error) {
+
+    }
 }

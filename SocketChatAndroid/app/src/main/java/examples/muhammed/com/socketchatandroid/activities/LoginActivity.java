@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.cabot.volleyframework.NetworkOptions;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -16,16 +15,19 @@ import examples.muhammed.com.socketchatandroid.constants.APIConstants;
 import examples.muhammed.com.socketchatandroid.constants.AppStorage;
 import examples.muhammed.com.socketchatandroid.constants.UrlConstants;
 import examples.muhammed.com.socketchatandroid.models.CommonResponse;
+import examples.muhammed.com.socketchatandroid.socket_impl.NetworkFrameWork;
+import examples.muhammed.com.socketchatandroid.socket_impl.NetworkOptions;
 import examples.muhammed.com.socketchatandroid.views.CButton;
 import examples.muhammed.com.socketchatandroid.views.CEditText;
 import examples.muhammed.com.socketchatandroid.views.CTextView;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, NetworkFrameWork.OnApiResult {
     private static final int LOGIN_REQUEST_ID = 100;
 
 
     private CEditText mUsernameCEditText;
     private CEditText mPasswordCEditText;
+    private NetworkFrameWork networkFrameWork;
 
 
     @Override
@@ -54,6 +56,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mLoginCButton.setOnClickListener(this);
         mRegisterLinkCTextView.setOnClickListener(this);
 
+        networkFrameWork = new NetworkFrameWork(this);
 
     }
 
@@ -63,7 +66,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.loginButton:
                 JSONObject object = getCredentials();
                 if (object != null)
-                    getNetworkManager().postJsonRequest(NetworkOptions.POST_REQUEST, UrlConstants.LOGIN_REQUEST, object, LOGIN_REQUEST_ID);
+                    networkFrameWork.getApi(NetworkOptions.POST_REQUEST, UrlConstants.LOGIN_REQUEST, object, LOGIN_REQUEST_ID, this);
+//                    getNetworkManager().postJsonRequest(NetworkOptions.POST_REQUEST, UrlConstants.LOGIN_REQUEST, object, LOGIN_REQUEST_ID);
                 break;
             case R.id.registerLinkTextView:
                 startActivity(new Intent(this, RegisterActivity.class));
@@ -94,10 +98,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return object;
     }
 
-    @Override
-    public void onError(VolleyError error) {
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -109,24 +109,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+
     @Override
-    public void onSuccess(JSONObject object, int type, int requestId) {
-        if (type == NetworkOptions.JSON_OBJECT_REQUEST) {
-            if (requestId == LOGIN_REQUEST_ID) {
-                Gson gson = new Gson();
-                CommonResponse commonResponse = gson.fromJson(object.toString(), CommonResponse.class);
-                if (commonResponse != null) {
-                    if (commonResponse.getServerStatus().getStatus()) {
-                        AppStorage.saveUserDetails(commonResponse.getUserDetails(), getApplicationContext());
-                        startActivityForResult(new Intent(this, ContactsActivity.class), BaseActivity.FINISH);
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
-                    }
+    public void onResultSucces(JSONObject jsonObject, int id) {
+        if (id == LOGIN_REQUEST_ID) {
+            Gson gson = new Gson();
+            CommonResponse commonResponse = gson.fromJson(jsonObject.toString(), CommonResponse.class);
+            if (commonResponse != null) {
+                if (commonResponse.getServerStatus().getStatus()) {
+                    AppStorage.saveUserDetails(commonResponse.getUserDetails(), getApplicationContext());
+                    startActivityForResult(new Intent(this, ContactsActivity.class), BaseActivity.FINISH);
+                    finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), getString(R.string.newtwork_check), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.newtwork_check), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onResultError(VolleyError error) {
+
     }
 }

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.cabot.volleyframework.NetworkOptions;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -21,14 +20,17 @@ import examples.muhammed.com.socketchatandroid.constants.AppStorage;
 import examples.muhammed.com.socketchatandroid.constants.UrlConstants;
 import examples.muhammed.com.socketchatandroid.models.ContactResponse;
 import examples.muhammed.com.socketchatandroid.models.UserDetails;
+import examples.muhammed.com.socketchatandroid.socket_impl.NetworkFrameWork;
+import examples.muhammed.com.socketchatandroid.socket_impl.NetworkOptions;
 import examples.muhammed.com.socketchatandroid.socket_impl.SocketImpl;
 
 
-public class ContactsActivity extends BaseActivity implements ContactsArrayAdapters.OnItemSelectedListener {
+public class ContactsActivity extends BaseActivity implements ContactsArrayAdapters.OnItemSelectedListener, NetworkFrameWork.OnApiResult {
     private static final int REQUEST_USER_LIST = 123;
     public static final String TO_USER_ID = "to_user_id";
     public static final String TO_USER_NAME = "to_user_name";
     private RecyclerView mContactRecyclerView;
+    private NetworkFrameWork networkFrameWork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class ContactsActivity extends BaseActivity implements ContactsArrayAdapt
     }
 
     private void setUI() {
+        networkFrameWork = new NetworkFrameWork(this);
         mContactRecyclerView = (RecyclerView) findViewById(R.id.contactListRecyclerView);
         mContactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -46,7 +49,7 @@ public class ContactsActivity extends BaseActivity implements ContactsArrayAdapt
          * Call API to get data.
          */
         String userId = AppStorage.getUserId(getApplicationContext());
-        getNetworkManager().postJsonRequest(NetworkOptions.GET_REQUEST, UrlConstants.USER_LIST_REQUEST + userId, null, REQUEST_USER_LIST);
+        networkFrameWork.getApi(NetworkOptions.GET_REQUEST, UrlConstants.USER_LIST_REQUEST + userId, null, REQUEST_USER_LIST, this);
 
         /**
          * Enabling socket
@@ -54,28 +57,6 @@ public class ContactsActivity extends BaseActivity implements ContactsArrayAdapt
 
     }
 
-    @Override
-    public void onError(VolleyError error) {
-
-    }
-
-    @Override
-    public void onSuccess(JSONObject object, int type, int requestId) {
-        if (type == NetworkOptions.JSON_OBJECT_REQUEST && requestId == REQUEST_USER_LIST) {
-            Toast.makeText(getApplicationContext(), object.toString(), Toast.LENGTH_SHORT).show();
-            Gson gson = new Gson();
-            ContactResponse contactResponse = gson.fromJson(object.toString(), ContactResponse.class);
-            if (contactResponse != null && contactResponse.getServerStatus().getStatus()) {
-                ArrayList<UserDetails> userDetails = new ArrayList<>(Arrays.asList(contactResponse.getUserDetails()));
-                ContactsArrayAdapters adapters = new ContactsArrayAdapters(this, userDetails);
-                adapters.setOnItemSelectedListener(this);
-                mContactRecyclerView.setAdapter(adapters);
-
-
-            }
-        }
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -112,5 +93,27 @@ public class ContactsActivity extends BaseActivity implements ContactsArrayAdapt
     protected void onPause() {
 //        updateMyStatus(false);
         super.onPause();
+    }
+
+    @Override
+    public void onResultSucces(JSONObject jsonObject, int id) {
+        if (id == REQUEST_USER_LIST) {
+            Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
+            Gson gson = new Gson();
+            ContactResponse contactResponse = gson.fromJson(jsonObject.toString(), ContactResponse.class);
+            if (contactResponse != null && contactResponse.getServerStatus().getStatus()) {
+                ArrayList<UserDetails> userDetails = new ArrayList<>(Arrays.asList(contactResponse.getUserDetails()));
+                ContactsArrayAdapters adapters = new ContactsArrayAdapters(this, userDetails);
+                adapters.setOnItemSelectedListener(this);
+                mContactRecyclerView.setAdapter(adapters);
+
+
+            }
+        }
+    }
+
+    @Override
+    public void onResultError(VolleyError error) {
+
     }
 }

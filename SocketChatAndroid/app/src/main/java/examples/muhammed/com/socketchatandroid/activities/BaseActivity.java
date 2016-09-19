@@ -2,44 +2,53 @@ package examples.muhammed.com.socketchatandroid.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
-import com.android.volley.VolleyError;
-import com.cabot.volleyframework.NetworkManager;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 
-import org.json.JSONObject;
 
-
-public abstract class BaseActivity extends AppCompatActivity implements NetworkManager.OnNetWorkListener {
+public abstract class BaseActivity extends AppCompatActivity {
     public static final int FINISH = 0x64;
-    private NetworkManager mNetworkManager;
+    public static final String TAG = BaseActivity.class
+            .getSimpleName();
+
+    private RequestQueue mRequestQueue;
+    private static BaseActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mNetworkManager = NetworkManager.getInstance(this);
         super.onCreate(savedInstanceState);
+        instance = this;
     }
 
-    @Override
-    protected void onResume() {
-        mNetworkManager.setOnNetworkListener(this);
-        super.onResume();
+    public RequestQueue getRequestQueue() {
+        if (mRequestQueue == null) {
+            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+
+        return mRequestQueue;
     }
 
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        onError(error);
+    public <T> void addToRequestQueue(Request<T> req, String tag) {
+        // set the default tag if tag is empty
+        req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
+        getRequestQueue().add(req);
     }
 
-    @Override
-    public void onResponse(JSONObject object, int type, int requestId) {
-        onSuccess(object, type, requestId);
+    public <T> void addToRequestQueue(Request<T> req) {
+        req.setTag(TAG);
+        getRequestQueue().add(req);
     }
 
-    public abstract void onError(VolleyError error);
+    public void cancelPendingRequests(Object tag) {
+        if (mRequestQueue != null) {
+            mRequestQueue.cancelAll(tag);
+        }
+    }
 
-    public abstract void onSuccess(JSONObject object, int type, int requestId);
-
-    public NetworkManager getNetworkManager() {
-        return mNetworkManager;
+    public static BaseActivity getInstance() {
+        return instance;
     }
 }

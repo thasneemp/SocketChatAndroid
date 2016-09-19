@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.cabot.volleyframework.NetworkOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,15 +12,18 @@ import org.json.JSONObject;
 import examples.muhammed.com.socketchatandroid.R;
 import examples.muhammed.com.socketchatandroid.constants.APIConstants;
 import examples.muhammed.com.socketchatandroid.constants.UrlConstants;
+import examples.muhammed.com.socketchatandroid.socket_impl.NetworkFrameWork;
+import examples.muhammed.com.socketchatandroid.socket_impl.NetworkOptions;
 import examples.muhammed.com.socketchatandroid.views.CButton;
 import examples.muhammed.com.socketchatandroid.views.CEditText;
 import examples.muhammed.com.socketchatandroid.views.CTextView;
 
-public class RegisterActivity extends BaseActivity implements View.OnClickListener {
+public class RegisterActivity extends BaseActivity implements View.OnClickListener, NetworkFrameWork.OnApiResult {
     private static final int REGISTER_REQUEST_ID = 200;
     private CEditText mNameCEditText;
     private CEditText mUserNameCEditText;
     private CEditText mPasswordCEditText;
+    private NetworkFrameWork networkFrameWork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
          */
         mRegisterCButton.setOnClickListener(this);
         mLinkTextView.setOnClickListener(this);
+
+        networkFrameWork = new NetworkFrameWork(this);
     }
 
     @Override
@@ -51,7 +55,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             case R.id.registerButton:
                 JSONObject object = getFieldValues();
                 if (object != null) {
-                    getNetworkManager().postJsonRequest(NetworkOptions.POST_REQUEST, UrlConstants.REGISTER_REQUEST, object, REGISTER_REQUEST_ID);
+                    networkFrameWork.getApi(NetworkOptions.POST_REQUEST, UrlConstants.REGISTER_REQUEST, object, REGISTER_REQUEST_ID, this);
+
                 }
                 break;
             case R.id.registerLinkTextView:
@@ -86,15 +91,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         return null;
     }
 
-    @Override
-    public void onError(VolleyError error) {
 
+    @Override
+    public void onResultSucces(JSONObject object, int requestId) {
+        if (requestId == REGISTER_REQUEST_ID) {
+            Toast.makeText(getApplicationContext(), object.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    public void onSuccess(JSONObject object, int type, int requestId) {
-        if (type == NetworkOptions.JSON_OBJECT_REQUEST && requestId == REGISTER_REQUEST_ID) {
-            Toast.makeText(getApplicationContext(), object.toString(), Toast.LENGTH_SHORT).show();
-        }
+    public void onResultError(VolleyError error) {
+
     }
 }
